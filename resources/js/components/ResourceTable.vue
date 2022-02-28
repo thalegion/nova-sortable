@@ -40,6 +40,7 @@
         :delete-resource="deleteResource"
         :restore-resource="restoreResource"
         is="resource-table-row"
+        :field="field"
         :resource="resource"
         :resource-name="resourceName"
         :relationship-type="relationshipType"
@@ -68,6 +69,7 @@ export default {
   mixins: [InteractsWithResourceInformation, ReordersResources],
   components: { Draggable },
   props: {
+    field: {},
     authorizedToRelate: {
       type: Boolean,
       required: true,

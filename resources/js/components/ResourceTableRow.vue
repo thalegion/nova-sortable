@@ -122,11 +122,13 @@
           :data-testid="`${testId}-delete-button`"
           :dusk="`${resource['id'].value}-delete-button`"
           class="inline-flex appearance-none cursor-pointer text-70 hover:text-primary mr-3"
-          v-tooltip.click="__(viaManyToMany ? 'Detach' : 'Delete')"
+          v-tooltip.click="_().get(field, 'buttons.delete.tooltip', __(viaManyToMany ? 'Detach' : 'Delete'))"
           v-if="resource.authorizedToDelete && (!resource.softDeleted || viaManyToMany)"
           @click.prevent="openDeleteModal"
         >
-          <icon />
+            <icon
+                :type="_().get(field, 'buttons.delete.type')"
+                :viewBox="_().get(field, 'buttons.delete.viewBox')"/>
         </button>
 
         <!-- Restore Resource Link -->
@@ -145,7 +147,7 @@
             v-if="deleteModalOpen"
             @confirm="confirmDelete"
             @close="closeDeleteModal"
-            :mode="viaManyToMany ? 'detach' : 'delete'"
+            :mode="_().get(field, 'modals.delete.mode', __(viaManyToMany ? 'detach' : 'delete'))"
           >
             <div slot-scope="{ uppercaseMode, mode }" class="p-8">
               <heading :level="2" class="mb-6">{{ __(uppercaseMode + ' Resource') }}</heading>
@@ -192,6 +194,7 @@ export default {
     'shouldShowCheckboxes',
     'updateSelectionStatus',
     'queryString',
+    'field',
   ],
 
   data: () => ({
@@ -232,6 +235,9 @@ export default {
     closeRestoreModal() {
       this.restoreModalOpen = false;
     },
+    _() {
+        return _;
+    }
   },
 
   computed: {
